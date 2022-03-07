@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useDetectClickOutside } from "react-detect-click-outside";
 
 const StyledSearchBarContainer = styled.div`
   justify-content: center;
@@ -28,16 +29,16 @@ const StyledSearchBar = styled.input`
 `;
 
 const SearchResultsWrapper = styled.div`
-  border: 2px solid black;
+  margin: 5px 0px;
 `;
 
-const StyledSearchResults = styled.div`
+const StyledSearchResults = styled.p`
   border: 1px solid transparent;
   background-color: #f1f1f1;
   padding: 10px;
+  margin: 0px;
   font-size: 20px;
   display: relative;
-  border-radius: 5px;
 
   :hover {
     background-color: grey;
@@ -54,14 +55,26 @@ const SearchBar = ({ setSearchValue, searchValue, accesKey }) => {
     navigate("/results");
   }
 
+  const ref = useDetectClickOutside({
+    onTriggered: () => (resultsFocus ? "" : setAutocomplete([])),
+  });
+
   const chandleSearch = (e) => {
     const result = [];
 
     if (e.target.value.length > 2) {
       axios
         .get(
-          `https://unsplash.com/nautocomplete/${e.target.value.toLowerCase()}
-      `
+          `https://cors-anywhere.herokuapp.com/unsplash.com/nautocomplete/${e.target.value.toLowerCase()}
+      `,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
+              "Access-Control-Allow-Headers":
+                "Content-Type, Authorization, Content-Length, X-Requested-With",
+            },
+          }
         )
         .then((res) => {
           for (const x of res.data.autocomplete) {
@@ -85,7 +98,7 @@ const SearchBar = ({ setSearchValue, searchValue, accesKey }) => {
         type="search"
         placeholder="Type word..."
         onChange={(e) => chandleSearch(e)}
-        onBlur={() => (resultsFocus ? setAutocomplete([]) : "")}
+        ref={ref}
         onKeyUp={(e) => {
           if (e.keyCode === 13) {
             setSearchValue(e.target.value);
@@ -94,17 +107,22 @@ const SearchBar = ({ setSearchValue, searchValue, accesKey }) => {
         }}
       ></StyledSearchBar>
 
-      {autocomplete.map((x, index) => (
-        <StyledSearchResults
-          key={index}
-          onClick={(e) => {
-            setSearchValue(e.target.innerHTML);
-            setAutocomplete([]);
-          }}
-        >
-          {x}
-        </StyledSearchResults>
-      ))}
+      <SearchResultsWrapper
+        onMouseEnter={() => setResultsFocus(true)}
+        onMouseLeave={() => setResultsFocus(false)}
+      >
+        {autocomplete.map((x, index) => (
+          <StyledSearchResults
+            key={index}
+            onClick={(e) => {
+              setSearchValue(e.target.innerHTML);
+              setAutocomplete([]);
+            }}
+          >
+            {x}
+          </StyledSearchResults>
+        ))}
+      </SearchResultsWrapper>
     </StyledSearchBarContainer>
   );
 };
