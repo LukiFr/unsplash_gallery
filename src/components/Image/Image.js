@@ -6,6 +6,8 @@ const StyledImage = styled.div`
   height: 300px;
   background-image: url(${(props) => props.url});
   background-size: cover;
+  background-position: center center;
+
 
   :hover {
     -webkit-box-shadow: 0px 8px 57px -4px rgba(66, 68, 90, 1);
