@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import SearchPage from "./components/SearchPage/SearchPage.js";
+import ResultPage from "./components/ResultPage/ResultPage.js";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import GlobalStyle from "./globalStyles.js";
 
-function App() {
+const App = () => {
+  const [searchValue, setSearchValue] = useState("");
+  const accesKey = "NEAZh6_uDSU543kj0g8w00UNEPi5mtWDl1ySgwUfY3o";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <SearchPage
+                setSearchValue={setSearchValue}
+                searchValue={searchValue}
+                accesKey={accesKey}
+              />
+            }
+          />
+          <Route
+            path="results"
+            element={
+              <ResultPage
+                setSearchValue={setSearchValue}
+                searchValue={searchValue}
+                accesKey={accesKey}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
-}
+};
 
 export default App;
