@@ -1,4 +1,4 @@
-# Dish Form
+# Unsplash Gallery
 
 ### Description
 
@@ -9,3 +9,7 @@
 - Download repository locally
 - Run ```npm i``` inside project folder
 - Run ```npm start``` to start application on http://localhost:3000/
+
+### Live preview
+
+- https://unsplashgallery.herokuapp.com/
