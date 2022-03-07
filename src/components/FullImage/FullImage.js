@@ -23,6 +23,7 @@ const StyledFullImage = styled.div`
   height: 70vh;
   background-image: url(${(props) => props.selectedImage.url});
   background-size: cover;
+  background-position: center center;
 `;
 
 const FullImage = ({ selectedImage }) => {
