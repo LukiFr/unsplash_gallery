@@ -12,4 +12,5 @@
 
 ### Live preview
 
+- Before acces live preview visit https://cors-anywhere.herokuapp.com/corsdemo and click Request temporary acces to the demo server
 - https://unsplashgallery.herokuapp.com/
